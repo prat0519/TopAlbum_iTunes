@@ -23,14 +23,32 @@ class TopAlbumAssignmentUITests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() {
+    func testAlbumListLoading() {
         // UI tests must launch the application that they test.
         let app = XCUIApplication()
         app.launch()
 
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        let tableQuery = app.tables
+        let cellsQuery = tableQuery.cells
+                
+        let count = NSPredicate(format: "count == 100")
+        expectation(for: count, evaluatedWith: cellsQuery, handler: nil)
+        waitForExpectations(timeout: 30, handler: nil)
+        
+        let cellElements = cellsQuery.allElementsBoundByIndex
+        cellElements[0].tap()
+        
+        let backButton = app.navigationBars["Details"].buttons["Top Album"]
+        backButton.tap()
+        
+        cellElements[99].tap()
+        
+        backButton.tap()
     }
+
 
     func testLaunchPerformance() {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, *) {
